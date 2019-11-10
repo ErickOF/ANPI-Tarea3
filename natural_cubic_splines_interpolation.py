@@ -18,8 +18,37 @@ Original file is located at
 import numpy as np
 import matplotlib.pyplot as plt
 
-def relajacion(A, b):
-    x = np.linalg.solve(A, b)
+
+def relajacion(A, b, x0, omega=0.5, tol=1e-8):
+    """
+    This is an implementation of the succesive over-relaxation method.
+
+    Inputs:
+    
+      A: nxn numpy matrix
+    
+      b: n dimensional numpy vector
+    
+      omega: relaxation factor
+    
+      x0: an initial value
+    
+      tol: tolerance
+    
+    Returns:
+    
+      x: solution matrix
+    """
+    x = x0.copy()
+    residual = np.linalg.norm(np.matmul(A, x) - b)
+    while residual > tol:
+        for i in range(A.shape[0]):
+            sigma = 0
+            for j in range(A.shape[1]):
+                if j != i:
+                    sigma += A[i][j] * x[j]
+            x[i] = (1 - omega) * x[i] + (omega / A[i][i]) * (b[i] - sigma)
+        residual = np.linalg.norm(np.matmul(A, x) - b)
     return x
 
 def trazador_cubico(points):
@@ -35,6 +64,7 @@ def trazador_cubico(points):
         raise ValueError("'points' must be a list or tuple")
     elif len(points) < 4:
         raise ValueError("The length of 'points' must be greater than 1")
+
     # Convert points to numpy array
     points = np.array([np.array(p) for p in points])
     # Compute hk
@@ -56,13 +86,17 @@ def trazador_cubico(points):
             A.append([0]*(i - 2) + [hk[i - 1], 2*(hk[i - 1] + hk[i]),
                                     hk[i]] + [0]*(k - 2 - i))
         b.append(6*(delta_yk[i]/hk[i] - delta_yk[i - 1]/hk[i - 1]))
+
     # Convert to numpy array
     A = np.array([np.array(a) for a in A])
     b = np.array(b)
+
     # Solving system linear equation
-    sigmas = relajacion(A, b)
+    x0 = np.zeros(b.shape)
+    sigmas = relajacion(A, b, x0)
     # Append sigmas[1] = 0 and sigmas[n+1] = 0
     sigmas = np.append(0, np.append(sigmas, 0))
+
     # Coeficients
     a, b, c, d = [[], [], [], []]
     # Initial points
@@ -74,11 +108,13 @@ def trazador_cubico(points):
         b.append(sigmas[i]/2)
         c.append((yk[i+1] - yk[i])/hk[i] - (2*hk[i]*sigmas[i]+hk[i]*sigmas[i+1])/6)
         d.append(yk[i])
+
     # To numpy array
     a = np.array(a)
     b = np.array(b)
     c = np.array(c)
     d = np.array(d)
+
     return a, b, c, d
 
 def plot_ncsi(points, a, b, c, d):
@@ -104,6 +140,7 @@ def plot_ncsi(points, a, b, c, d):
         for i in range(a.shape[0]):
             if points[i][0] <= xk <= points[i+1][0]:
                 pk.append([xk, a[i]*(xk - points[i][0])**3 + b[i]*(xk - points[i][0])**2 + c[i]*(xk - points[i][0]) + d[i]])
+
     # Plot function
     plt.title('Natural Cubic Splines Interpolation')
     plt.plot([x for x, y in pk], [y for x, y in pk])
@@ -111,6 +148,7 @@ def plot_ncsi(points, a, b, c, d):
     plt.grid(True)
     plt.xlabel('x')
     plt.ylabel('f(x)')
+    plt.show()
 
 
 if __name__ == '__main__':
