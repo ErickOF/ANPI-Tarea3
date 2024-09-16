@@ -73,19 +73,19 @@ if __name__ == '__main__':
     print('SOR method')
 
     # Define the coefficient matrix A and the right-hand side vector b
-    A: np.ndarray = np.array([[ 4, -1, -6,  0],
-                              [-5, -4, 10,  8],
-                              [ 0,  9,  4, -2],
-                              [ 1,  0, -7,  5]])
-    b: np.ndarray = np.array([2, 21, -12, -6])
+    #A: np.ndarray = np.array([[ 4, -1, -6,  0],
+    #                          [-5, -4, 10,  8],
+    #                          [ 0,  9,  4, -2],
+    #                          [ 1,  0, -7,  5]])
+    #b: np.ndarray = np.array([2, 21, -12, -6])
     # Initial guess for the solution
-    x0: np.ndarray = np.zeros(4)
+    #x0: np.ndarray = np.zeros(4)
     
     # Print the input values
-    print(A, b, x0, '', sep='\n')
+    #print(A, b, x0, '', sep='\n')
 
     # Call the relaxation function to solve the system
-    x: np.ndarray = relaxation(A, b, x0)
+    #x: np.ndarray = relaxation(A, b, x0)
     
     # Print the resulting solution
-    print(x)
+    #print(x)
