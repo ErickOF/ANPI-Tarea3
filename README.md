@@ -16,7 +16,7 @@ Semester II - 2019
 
 2. Implement a function for the natural cubic spline interpolation method in Octave or Python, considering the ordered pairs $(x_0, y_0), (x_1, y_1), ..., (x_n, y_n)$. The name of this function should be `trazador_cubico`. Note: The implementation of this method requires solving a system of linear equations. For this, use the iterative relaxation method. Indicate which are the initial parameters and which are the output parameters.
 
-5. **[Value: 20 points]** Consider the following table, which represents ordered pairs of the form $(x_n, y_n)$:
+3. Consider the following table, which represents ordered pairs of the form $(x_n, y_n)$:
 
    | n  | \(x_n\) | \(y_n\)  |
    |----|---------|----------|
